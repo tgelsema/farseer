@@ -1,0 +1,13 @@
+- the query 'welk adres is het kleinst in Leiden?' should have it's selection criterion outside the aggregation operation. Seems SOLVED.
+- something's wrong with the query 'Welk bedrijf in Leiden heeft de meeste werknemers?' Perhaps a new mode of aggregation is required. Same with 'Bedrijf in de industrie met het kleinste aantal oogartsen'.
+- also, with the same query as above, sometimes 'Leiden' is interpreted as the place of living of employees
+- see also: Bedrijf in de industrie met het kleinste aantal oogartsen
+- see also (simpler): Het bedrijf met de meeste werknemers.
+- see also (class 2): Wat is het aantal werknemers per bedrijf? SOLVED
+- something's wrong with the query 'De gemeente met de kleinste omzet in totaal van industriele bedrijven': wrong pseudodimension (bedrijf). Similar queries are OK though. SOLVED.
+- also check: 'welke griffier heeft het hoogste salaris in totaal in Delft'. Pseudodimension seems OK (persoon), but does not get substituted. Similar query 'Het hoogste salaris in Delft in totaal, welke griffier heeft dat?' does not get interpreted. SOLVED.
+- the query: 'De gemeente waar een bedrijf is met de minste omzet' has an extra id (class 10). SOLVED.
+- check the class 11 query: 'Gemeente met gemiddeld het kleinste aantal banen bij een industrieel bedrijf'. Receives wrong pseudodimension (bedrijf). Also some (one) similar starting with 'De gemeente'. SOLVED.
+- the query 'Hoeveel wordt er per gemeente gemiddeld verdiend?') crashes when computing target. SOLVED. (Bug: lrn routine used 'or' instead of 'and'.)
+- please review the semantics of the query 'gemiddeld inkomen op een adres naar geslacht en gemeente'. Now in routine 'assembletermforclass4' both nominator and denominator make reference to target. Perhaps consider a 'split' in 'assembletermforclass4'.
+- Routine assembleforclass4 should be more aligned with assembleforclass5. Is it impossible for a query to have different paths to constants (dimensions) in nominator and denominator?

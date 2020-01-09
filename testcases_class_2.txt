@@ -1,0 +1,17 @@
+Aantal banen
+Aantal personen
+Aantal banen in Leiden
+Aantal personen in Leiden
+Aantal banen per bedrijf
+Aantal personen per adres
+Aantal banen per bedrijf per functie
+Aantal personen per gemeente en geslacht
+Aantal banen per bedrijf per functie in Leiden
+Aantal personen per adres en geslacht in Leiden
+Aantal werknemers
+Aantal werknemers in Leiden *
+Aantal werknemers per bedrijf
+Aantal werknemers naar geslacht
+Aantal werknemers naar geslacht per bedrijf
+Aantal werknemers naar geslacht per bedrijf in Leiden *
+Aantal werknemers naar geslacht en adres in Leiden *?

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?><Codelijst>
+        <Code>
+          <Waarde>1</Waarde>
+          <Label>Veiligheid algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.1</Waarde>
+          <Label>Huis algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.1.1</Waarde>
+          <Label>Diefstal/inbraak woning</Label>
+        </Code>
+        <Code>
+          <Waarde>1.1.2</Waarde>
+          <Label>Diefstal/inbraak box/garage/schuur/tuinhuis</Label>
+        </Code>
+        <Code>
+          <Waarde>1.2</Waarde>
+          <Label>Straat algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.2.1</Waarde>
+          <Label>Diefstal uit/vanaf motorvoertuigen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.2.2</Waarde>
+          <Label>Diefstal van motorvoertuigen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.2.3</Waarde>
+          <Label>Diefstal van brom-, snor-, fietsen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.2.4</Waarde>
+          <Label>Zakkenrollerij</Label>
+        </Code>
+        <Code>
+          <Waarde>1.2.5</Waarde>
+          <Label>Diefstal af/uit/van overige voertuigen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.3</Waarde>
+          <Label>Weg algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.3.1</Waarde>
+          <Label>Verkeersongevallen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4</Waarde>
+          <Label>Lichamelijke integriteit algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4.1</Waarde>
+          <Label>Zedenmisdrijf</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4.2</Waarde>
+          <Label>Moord, doodslag</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4.3</Waarde>
+          <Label>Openlijk geweld (persoon)</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4.4</Waarde>
+          <Label>Bedreiging</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4.5</Waarde>
+          <Label>Mishandeling</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4.6</Waarde>
+          <Label>Straatroof</Label>
+        </Code>
+        <Code>
+          <Waarde>1.4.7</Waarde>
+          <Label>Overval</Label>
+        </Code>
+        <Code>
+          <Waarde>1.5</Waarde>
+          <Label>Water algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.5.1</Waarde>
+          <Label>Ongevallen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.5.2</Waarde>
+          <Label>Diefstallen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.6</Waarde>
+          <Label>Overige veiligheid Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.6.1</Waarde>
+          <Label>Brand/ontploffing</Label>
+        </Code>
+        <Code>
+          <Waarde>1.6.2</Waarde>
+          <Label>Overige vermogensdelicten</Label>
+        </Code>
+        <Code>
+          <Waarde>1.6.3</Waarde>
+          <Label>Restcategorie</Label>
+        </Code>
+        <Code>
+          <Waarde>1.7</Waarde>
+          <Label>Lucht algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.7.1</Waarde>
+          <Label>Ongevallen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.7.2</Waarde>
+          <Label>Diefstallen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.8</Waarde>
+          <Label>Rail Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.8.1</Waarde>
+          <Label>Ongevallen</Label>
+        </Code>
+        <Code>
+          <Waarde>1.8.2</Waarde>
+          <Label>Diefstallen</Label>
+        </Code>
+        <Code>
+          <Waarde>2</Waarde>
+          <Label>Leefbaarheid algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.1</Waarde>
+          <Label>Drugs/drank Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.1.1</Waarde>
+          <Label>Drugs/drankoverlast</Label>
+        </Code>
+        <Code>
+          <Waarde>2.2</Waarde>
+          <Label>Openbare ruimte algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.2.1</Waarde>
+          <Label>Vernieling cq. zaakbeschadiging</Label>
+        </Code>
+        <Code>
+          <Waarde>2.2.2</Waarde>
+          <Label>Overlast uitgaansgelegenheid/horeca</Label>
+        </Code>
+        <Code>
+          <Waarde>2.3</Waarde>
+          <Label>Verkeer algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.3.1</Waarde>
+          <Label>Verkeersoverlast</Label>
+        </Code>
+        <Code>
+          <Waarde>2.4</Waarde>
+          <Label>Wonen algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.4.1</Waarde>
+          <Label>Burengerucht (relatieproblemen)</Label>
+        </Code>
+        <Code>
+          <Waarde>2.4.2</Waarde>
+          <Label>Huisvredebreuk</Label>
+        </Code>
+        <Code>
+          <Waarde>2.5</Waarde>
+          <Label>Bedrijven en instellingen algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.5.1</Waarde>
+          <Label>Diefstal/inbraak bedrijven en instellingen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.5.2</Waarde>
+          <Label>Winkeldiefstal</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6</Waarde>
+          <Label>Milieu algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.1</Waarde>
+          <Label>Inrichting Wet Milieubeheer</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.2</Waarde>
+          <Label>Bodem</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.3</Waarde>
+          <Label>Water</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.4</Waarde>
+          <Label>Afval</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.5</Waarde>
+          <Label>Bouwstoffen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.6</Waarde>
+          <Label>Geluid</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.7</Waarde>
+          <Label>Mest</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.8</Waarde>
+          <Label>Transport gevaarlijke stoffen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.6.9</Waarde>
+          <Label>Vuurwerk</Label>
+        </Code>
+        <Code>
+          <Waarde>2.7</Waarde>
+          <Label>Overige leefbaarheid Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>2.7.1</Waarde>
+          <Label>Overlast</Label>
+        </Code>
+        <Code>
+          <Waarde>2.7.2</Waarde>
+          <Label>Bijzondere wetten</Label>
+        </Code>
+        <Code>
+          <Waarde>2.7.3</Waarde>
+          <Label>Restcategorie</Label>
+        </Code>
+        <Code>
+          <Waarde>3</Waarde>
+          <Label>Maatschappelijke integriteit algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.1</Waarde>
+          <Label>Illegale handel Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.1.1</Waarde>
+          <Label>Drugshandel</Label>
+        </Code>
+        <Code>
+          <Waarde>3.1.2</Waarde>
+          <Label>Mensensmokkel</Label>
+        </Code>
+        <Code>
+          <Waarde>3.1.3</Waarde>
+          <Label>Wapenhandel</Label>
+        </Code>
+        <Code>
+          <Waarde>3.1.4</Waarde>
+          <Label>Fraude</Label>
+        </Code>
+        <Code>
+          <Waarde>3.2</Waarde>
+          <Label>Zeden algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.2.1</Waarde>
+          <Label>Kinderporno</Label>
+        </Code>
+        <Code>
+          <Waarde>3.2.2</Waarde>
+          <Label>Kinderprostitutie</Label>
+        </Code>
+        <Code>
+          <Waarde>3.2.3</Waarde>
+          <Label>Mensenhandel</Label>
+        </Code>
+        <Code>
+          <Waarde>3.3</Waarde>
+          <Label>Milieu algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.3.1</Waarde>
+          <Label>Milieu (org. crim)</Label>
+        </Code>
+        <Code>
+          <Waarde>3.4</Waarde>
+          <Label>Jeugd algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.4.1</Waarde>
+          <Label>Jeugdcriminaliteit</Label>
+        </Code>
+        <Code>
+          <Waarde>3.5</Waarde>
+          <Label>Weg Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.5.1</Waarde>
+          <Label>Snelheid</Label>
+        </Code>
+        <Code>
+          <Waarde>3.5.2</Waarde>
+          <Label>Alcohol</Label>
+        </Code>
+        <Code>
+          <Waarde>3.5.3</Waarde>
+          <Label>Gebruik van gordel, helm</Label>
+        </Code>
+        <Code>
+          <Waarde>3.5.4</Waarde>
+          <Label>Roodlicht</Label>
+        </Code>
+        <Code>
+          <Waarde>3.5.5</Waarde>
+          <Label>Weg overig</Label>
+        </Code>
+        <Code>
+          <Waarde>3.6</Waarde>
+          <Label>Openbare orde Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.6.1</Waarde>
+          <Label>Evenementen sport</Label>
+        </Code>
+        <Code>
+          <Waarde>3.6.2</Waarde>
+          <Label>Evenementen demonstraties</Label>
+        </Code>
+        <Code>
+          <Waarde>3.6.3</Waarde>
+          <Label>Evenementen overig</Label>
+        </Code>
+        <Code>
+          <Waarde>3.6.4</Waarde>
+          <Label>Aantasting openbare orde</Label>
+        </Code>
+        <Code>
+          <Waarde>3.7</Waarde>
+          <Label>Overige maatschappelijke integriteit algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>3.7.1</Waarde>
+          <Label>Discriminatie</Label>
+        </Code>
+        <Code>
+          <Waarde>3.7.2</Waarde>
+          <Label>Vreemdelingenzorg</Label>
+        </Code>
+        <Code>
+          <Waarde>3.7.3</Waarde>
+          <Label>Restcategorie</Label>
+        </Code>
+        <Code>
+          <Waarde>4</Waarde>
+          <Label>Dienstverlening algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.1</Waarde>
+          <Label>Bereikbaarheid en beschikbaarheid algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.2</Waarde>
+          <Label>Preventie algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.2.1</Waarde>
+          <Label>Preventiemaatregelen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.2.2</Waarde>
+          <Label>Preventiecontrole</Label>
+        </Code>
+        <Code>
+          <Waarde>4.3</Waarde>
+          <Label>Slachtofferzorg algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.4</Waarde>
+          <Label>Klachten algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.5</Waarde>
+          <Label>Hulpverlening Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.5.1</Waarde>
+          <Label>Hulpverlening aan personen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.5.2</Waarde>
+          <Label>Hulpverlening aan instanties</Label>
+        </Code>
+        <Code>
+          <Waarde>4.6</Waarde>
+          <Label>Overige dienstverlening Algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>4.6.1</Waarde>
+          <Label>Restcategorie</Label>
+        </Code>
+        <Code>
+          <Waarde>5</Waarde>
+          <Label>Interne performance</Label>
+        </Code>
+        <Code>
+          <Waarde>5.1</Waarde>
+          <Label>Interne performance algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>5.2</Waarde>
+          <Label>Intake algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>5.3</Waarde>
+          <Label>Handhaven algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>5.4</Waarde>
+          <Label>Opsporen algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>6</Waarde>
+          <Label>Dashboard dummy algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>6.1</Waarde>
+          <Label>Dashboard dummy algemeen</Label>
+        </Code>
+        <Code>
+          <Waarde>6.1.1</Waarde>
+          <Label>Dashboard dummy</Label>
+        </Code>
+        <Code>
+          <Waarde>9.1</Waarde>
+          <Label>KMar, geen INPcode</Label>
+        </Code>
+      </Codelijst>

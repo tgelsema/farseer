@@ -1,0 +1,24 @@
+Op welk adres wonen de meeste griffiers?
+Op welk adres wonen het grootste aantal griffiers?
+op welk adres wonen de meeste personen?
+Op welk adres wonen de meeste bewoners?
+In welke gemeente wonen de meeste personen?
+Welke gemeente heeft de meeste inwoners?
+In welke gemeente wonen de minste personen?
+Gemeente met in totaal het laagste aantal inwoners
+Op welk adres in Leiden wonen het laagste aantal personen?
+Het adres met de minste personen in Leiden
+Welk bedrijf in de industrie heeft het grootste aantal banen als griffier?
+Het grootste aantal banen als griffier, welk industrieel bedrijf heeft dat?
+In welke gemeente wonen de minste mensen?
+Het kleinst aantal inwoners, welke gemeente heeft dat?
+Persoon met het grootste aantal banen
+Persoon met de meeste banen in totaal
+Het bedrijf in Leiden waar het hoogste aantal personen werkt
+In Leiden, bij welk bedrijf werken de meeste mensen?
+Welke gemeente heeft de minste adressen?
+Gemeente met in totaal het kleinste aantal adressen
+Bedrijf in de industrie met het kleinste aantal oogartsen
+Welk bedrijf in de industrie heeft in totaal de minste oogartsen?
+Gemeente met de meeste griffiers
+In welke gemeente wonen de meeste personen die griffier zijn?

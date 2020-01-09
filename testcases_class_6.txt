@@ -1,0 +1,24 @@
+wat is het grootste adres? - query does not include ORDER BY
+Welk adres is het grootst?
+wat is de kleinste gemeente?
+De gemeente die het kleinste is
+de grootste gemeente
+welke gemeente is het grootst?
+Welk adres in Leiden is het kleinst?
+Het kleinste adres in Leiden
+Het kleinste adres van Leiden
+In Delft het grootste bedrijf
+Het grootste bedrijf in Leiden in de gezondheidszorg
+In de gezondheidszorg in Leiden het grootste bedrijf
+De kleinste mannelijke griffier die werkt in de industrie
+Wat is de kleinste persoon die griffier is en man in de industrie?
+Wat is de kleinste baan die door een man wordt bekleed in Den Haag?
+Welke baan is het kleinst in Den Haag door een man bekleed?
+Welke persoon is het grootst in Rotterdam?
+In Rotterdam de grootste persoon
+Wat is het kleinste adres aan de Meppelerweg in Den Haag?
+In Den Haag aan de Meppelerweg het kleinste adres
+Wat is het kleinste bedrijf in Leiden in de industrie?
+In de industrie het kleinste bedrijf in Leiden
+Grootste baan in de industrie in Delft
+Wat is in Delft de grootste baan in de industrie?

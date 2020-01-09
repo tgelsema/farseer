@@ -1,0 +1,19 @@
+hoeveel verdienen personen die oogarts zijn gemiddeld?
+hoeveel wordt er verdiend door mannen gemiddeld?
+hoeveel wordt er gemiddeld door mannen verdiend?
+het gemiddeld salaris per bedrijf naar gemeente gevestigd -- ambiguous: ignore reference to 'bedrijf'; correct though
+wat is het gemiddelde salaris bij een bedrijf voor alle gemeenten waar zij zijn gevestigd? -- ambiguous, but correct
+het gemiddeld salaris van een persoon naar woongemeente -- ambiguous, but correct
+wat is naar woongemeente het gemiddelde salaris van een persoon?
+de gemiddelde omzet van een bedrijf per activiteit
+hoeveel is de omzet van een bedrijf gemiddeld per activiteit?
+gemiddeld inkomen op een adres naar geslacht en gemeente -- ambiguous: ignore reference to 'adres'; correct though
+van alle gemeenten per geslacht het gemiddeld inkomen op een adres -- ignore reference to 'adres'
+gemiddelde leeftijd op een adres per gemeente -- ignore reference to 'adres'
+de gemiddeld leeftijd van een adres voor iedere gemeente -- idem
+wat is de leeftijd op een adres per gemeente gemiddeld? -- idem
+voor alle gemeenten en geslacht de gemiddelde leeftijd op een adres -- idem
+de gemiddelde leeftijd op een adres voor iedere gemeente per geslacht -- idem
+gemiddelde leeftijd per gemeente
+wat is per gemeente de leeftijd gemiddeld?
+gemiddelde leeftijd in Leiden

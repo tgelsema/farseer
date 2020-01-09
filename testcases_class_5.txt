@@ -1,0 +1,43 @@
+het gemiddeld aantal banen per baan - nonsense
+het gemiddeld aantal banen per activiteit - nonsense, since 'activiteit' is not countable
+het gemiddeld aantal banen bij een bedrijf - see sql query
+het gemiddeld aantal banen bij een bedrijf per activiteit
+het gemiddeld aantal banen per gemeente en activiteit en per geslacht - 'gemeente' is countable, so split - see sql query
+het gemiddeld aantal banen per gemeente - see sql query
+het gemiddeld aantal banen per gemeente en geslacht - see sql query
+het gemiddeld aantal banen per bedrijf per geslacht - see sql query
+het gemiddeld aantal banen per bedrijf per geslacht in Delft - see sql query
+het gemiddeld aantal banen per bedrijf per geslacht en activiteit - see sql query
+het gemiddeld aantal banen per bedrijf per gemeente en activiteit
+het gemiddeld aantal banen bij een bedrijf per gemeente
+het gemiddeld aantal banen per gemeente bij een bedrijf
+het gemiddeld aantal banen bij een bedrijf per geslacht - check this. OK though. Query crashes.
+het gemiddeld aantal banen bij een bedrijf per gemeente per geslacht - OK. Query crashes.
+het gemiddeld aantal banen per gemeente en geslacht bij een bedrijf
+het gemiddeld aantal banen bij een bedrijf per gemeente per geslacht per functie. Query crashes.
+gemiddeld aantal mannen op een adres per gemeente - is this correct? Yes it is.
+gemiddeld aantal oogartsen op een adres naar gemeente
+gemiddeld aantal oogartsen op een adres naar gemeente en geslacht. Query crashes.
+per gemeente het aantal mannen op een adres gemiddeld - is this correct? Yes it is.
+wat is het gemiddeld aantal banen per gemeente van bedrijven in de industrie? Dubious but correct.
+hoeveel banen zijn er gemiddeld in de industrie bij een bedrijf per gemeente? Same interpretation as above.
+het gemiddeld aantal banen als kolonel in een bedrijf naar gemeente waar het is gevestigd
+hoeveel banen als kolonel zijn er gemiddeld bij een bedrijf voor elke gemeente?
+gemiddeld aantal personen op een adres in Den Haag naar geslacht. Query crashes.
+gemiddeld aantal personen op een adres naar geslacht. Query crashes.
+gemiddeld aantal personen op een adres in Den Haag
+op een adres in Den Haag wat is het gemiddeld aantal personen?
+hoeveel vrouwen wonen er gemiddeld op een adres in Den Haag?
+gemiddeld aantal vrouwen op een adres in Den Haag
+wat is het gemiddeld aantal banen bij bedrijven in Delft?
+het gemiddeld aantal banen bij bedrijven in Delft
+gemiddeld aantal banen van griffiers in Delft van bedrijven
+wat is het gemiddeld aantal banen bij bedrijven van griffiers in Delft? Check query.
+het gemiddeld aantal oogartsen op een adres op de Meppelerweg in Den Haag. Check query.
+wat is het gemiddeld aantal oogartsen op een adres op de Meppelerweg in Den Haag? Check query.
+gemiddeld aantal werknemers per bedrijf. Check query.
+gemiddeld aantal werknemers per bedrijf in Leiden. Check query.
+gemiddeld aantal werknemers per bedrijf naar geslacht. Query crashes.
+gemiddeld aantal werknemers per bedrijf naar geslacht en activiteit. Query crashes.
+gemiddeld aantal werknemers per bedrijf naar geslacht en activiteit in Leiden. Query crashes.
+gemiddeld aantal werknemers per bedrijf naar geslacht en activiteit en functie per gemeente. Query crashes.
