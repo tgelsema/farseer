@@ -61,9 +61,10 @@ def report(s, classmodel, classtokenizer, targetmodel, targettokenizer):
         order = ""
     if term != None:
         print('term:             %s' % term.more())
-        # c = cmpl(term, var, order)
-        # print('sql query:        ')
-        # print(c)
+        c = cmpl(term, var, order)
+        print('sql query:        ')
+        print()
+        print(c)
     else:
         print('term:             None')
     # print('\n')
