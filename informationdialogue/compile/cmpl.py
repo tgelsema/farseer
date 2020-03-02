@@ -253,9 +253,10 @@ class QStruct:
                 w.lhs.table = new_table
             if w.rhs.table == old_table:
                 w.rhs.table = new_table
-        for g in self.groupbys:
-            if g.table == old_table:
-                g.table = new_table
+        if isinstance(self.groupbys, list):
+            for g in self.groupbys:
+                if g.table == old_table:
+                    g.table = new_table
             
     def dedup_frozen(self):
         if not DEDUP_FROZEN:
@@ -304,8 +305,9 @@ class QStruct:
         for where in self.wheres:
             wherestr += f" AND {where}" if wherestr else f"\nWHERE {where}"
         groupbystr = ""
-        for groupby in self.groupbys:
-            groupbystr += f", {groupby}" if groupbystr else f"\nGROUP BY {groupby}"
+        if isinstance(self.groupbys, list):
+            for groupby in self.groupbys:
+                groupbystr += f", {groupby}" if groupbystr else f"\nGROUP BY {groupby}"
         orderbystr = ""
         if self.orderby is not None:
             orderdir = "DESC" if self.orderdir == "desc" else "ASC"
@@ -327,8 +329,8 @@ class QOperator:
     Since the dimension provided by the projection operator is 1-based, while Python is
     zero-based, we convert the dimension to zero-based here."""
 class QProjection:
-    def __init__(self, dimension):
-        self.dimension = dimension - 1
+    def __init__(self, dimensions):
+        self.dimensions = dimensions
 
 def freeze_qsts(qsts):
 
@@ -381,6 +383,14 @@ def do_composition(qsts, var, order):
     rhs = qsts.pop()
     lhs = qsts.pop()
 
+    if isinstance(rhs, QProjection):
+        # Ignore projection operator on the right hand side
+        # It works solely on the domain of the entire expression so can be ignored
+        # Either that domain is more complex than it needs to be, or some other part
+        # of the expression has the entire domain.
+        qsts.append(lhs)
+        return do_composition(qsts, var, order)
+
     selectsdom = rhs.selectsdom
     frm = rhs.frm
     joins = rhs.joins
@@ -402,7 +412,8 @@ def do_composition(qsts, var, order):
         selectscod = [ ExpressionAlias(args, alias = alias, prefix = lhs.prefix, infix = lhs.infix) ]
         frozen_qsts = [ f for q in [ rhs ] for f in q.frozen_qsts ]
     elif isinstance(lhs, QProjection):
-        selectscod = rhs.selectscod[lhs.dimension:lhs.dimension + 1]
+        selectscod = [ rhs.selectscod[x] for x in lhs.dimensions ]
+        #selectscod = rhs.selectscod[lhs.dimension:lhs.dimension + 1]
         frozen_qsts = [ f for q in [ rhs ] for f in q.frozen_qsts ]
         if selectscod[0].alias != Name("key"):  # This should not occur - we only order by columns actually selected
             orderby = None
@@ -447,6 +458,15 @@ def cmplproduct(args, var, order):
     for arg in args:
         qsts.append(do_cmpl(arg, var, order))
 
+    if isinstance(qsts[0], QProjection):
+        dimensions = []
+        for qst in qsts:
+            if not isinstance(qst, QProjection):
+                raise SyntaxError("Product contains mixture of projections and other stuff")
+            dimensions += qst.dimensions
+        
+        return QProjection(dimensions)
+
     freeze_qsts(qsts)
 
     selectsdom = qsts[0].selectsdom
@@ -455,6 +475,7 @@ def cmplproduct(args, var, order):
     # Is the following necessary? 
     # domain of all product operands must be the same, can we then conclude that table is also the same?
     # If this is the case, this for loop is not necessary
+    # Edit: No we cannot. One table or both can be frozen queries, in which case table names are different
     for qst in qsts[1:]:
         if qst.selectsdom[0].table != selectsdom[0].table:
             joins.append(CondAlias(qst.selectsdom[0].table, "", selectsdom[0].get_column(), qst.selectsdom[0].get_column()))
@@ -542,6 +563,8 @@ def cmplaggregation(args, var, order):
     joins += [ j for j in qsts[0].joins + qsts[1].joins ]
     wheres = [ w for w in qsts[0].wheres + qsts[1].wheres ]
     groupbys = [ s.get_column() for s in selectsdom if s.table ]
+    if not groupbys:
+         groupbys = True
     frozen_qsts = [ f for q in qsts for f in q.frozen_qsts ]
     qst = QStruct(selectsdom, selectscod, frm, joins, wheres, groupbys, frozen_qsts, False, qsts[0].orderby, qsts[0].orderdir)
     return qst
@@ -551,32 +574,32 @@ def cmplprojection(args, var, order):
         while the other arguments are terms. The projection operator selects the nth term
         from the list of terms. The parameter n is between 1 and the number of terms, inclusive"""
     
-    return QProjection(args[-1])
+    return QProjection([args[-1] - 1])
 
 def cmploperator(term, var, order):
     if term.name == "(/)":
         qop = QOperator(infix = " / ")
         return qop
     
-def findtable(term):
+def findtable(term_name):
     for d in data:
-        if foundsome(term, d.constr):
+        if foundsome(term_name, d.constr):
             return d
     return None
         
-def foundsome(subterm, term):
+def foundsome(subterm_name, term):
     if term.__class__.__name__ == 'Application':
         for arg in term.args:
-            if foundsome(subterm, arg):
+            if foundsome(subterm_name, arg):
                 return True
-    if term.__class__.__name__ == 'Variable' or term.__class__.__name__ == "Constant" or term.__class__.__name__ == "ObjectTypeRelation":
-        if term.name == re.sub(' ', '_', subterm.name):
+    elif term.__class__.__name__ == 'Variable' or term.__class__.__name__ == "Constant" or term.__class__.__name__ == "ObjectTypeRelation":
+        if term.name == subterm_name:
             return True
     return False
     
 def cmplobjecttyperelation(term, var, order):
-    table = findtable(term)
     name = re.sub(' ', '_', term.name)
+    table = findtable(name)
     frm = TableAlias(table)
     selectsdom = [ ColumnAlias(frm.get_alias(), f"{table}_id", "") ]
     selectscod = [ ColumnAlias(frm.get_alias(), f"{name}", "") ]
@@ -587,8 +610,8 @@ def cmplvariable(term, var, order):
     if term.codomain == one or term.name[:3] == "een":
         return cmplimmediate(term, var, order)
 
-    # Code below copied from cmplobjecttyperelation() and adaptedIK 
-    table = findtable(term)
+    # Code below copied from cmplobjecttyperelation() and adapted
+    table = findtable(term.name)
     name = re.sub(' ', '_', term.name)
     frm = TableAlias(table)
     selectsdom = [ ColumnAlias(frm.get_alias(), f"{table}_id", "") ]
@@ -609,7 +632,11 @@ def cmplimmediate(term, var, order):
     frm = TableAlias(table) 
     selectsdom = [ ColumnAlias(frm.get_alias(), f"{table}_id", "") ]
     selectscod = [ ColumnAlias("", f"{imm}", "") ]
-    qst = QStruct(selectsdom, selectscod, frm, [], [])
+    orderby = None
+    if var is not None and var.equals(term):
+        orderby = Name("key")
+        selectscod[0].alias = Name("key")
+    qst = QStruct(selectsdom, selectscod, frm, None, None, None, None, None, orderby, order)
     return qst
 
 def cmplconstant(term, var, order):
