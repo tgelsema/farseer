@@ -6,11 +6,12 @@ Created on Mon Dec  3 15:04:55 2018
 """
 
 import xml.etree.ElementTree as et
-from informationdialogue.kind.knd import Constant
+from informationdialogue.kind.knd import Constant, ObjectType
 import re
+import csv
 
 def makescmcodemeta():
-    writelabels('./informationdialoge/domainmodel/SCMcode.xml', './informationdialogue/domainmodel/scmcodelookup.txt')
+    writelabels('./informationdialogue/domainmodel/SCMcode.xml', './informationdialogue/domainmodel/scmcodelookup.txt')
 
 def writelabels(xmlfile, outfile):
     e = et.parse(xmlfile).getroot()
@@ -80,6 +81,16 @@ def writelevel(lst, fw):
         fulllst.append(lastlevel)
     fw.write('\t'.join(fulllst))
     fw.write('\n')
+    
+def gemeenteconsts(cod):
+    lst = []
+    with open('./informationdialogue/domainmodel/Gemeenten alfabetisch 2020.csv', 'r') as fr:
+        csvr = csv.reader(fr, delimiter='\t')
+        for row in csvr:
+            const = Constant(name=row[2], codomain=cod, code=row[1])
+            if not const in lst:
+               lst.append(const)
+    return lst
 
 def test():
     lst = makescmcodedata()

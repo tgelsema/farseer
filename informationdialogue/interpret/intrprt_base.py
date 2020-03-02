@@ -6,7 +6,7 @@ Created on Mon Feb  4 10:40:17 2019
 @author: tgelsema
 """
 
-from informationdialogue.domainmodel.dm import domainmodel, whichway, getal, overridetarget, one
+from informationdialogue.domainmodel.dm import domainmodel, whichway, getal, overridetarget, one, ones, alls
 from informationdialogue.term.trm import Application, product, composition, cartesian_product, projection, alpha, inverse, inclusion
 from informationdialogue.kind.knd import Variable, ObjectTypeRelation, Element
 
@@ -180,10 +180,18 @@ def terminlist(term, lst):
     return False
 
 def een(p):
-    return Variable(name="een(%s)" % p.__repr__(), domain=p, codomain=getal)
+    title = "een(%s)" % p.name
+    for d in ones:
+        if d.name == title:
+            return d
+    return Variable(name=title, domain=p, codomain=getal)
 
 def alle(p):
-    return Variable(name="alle(%s)" % p.__repr__(), domain=p, codomain=one)
+    title = "alle(%s)" % p.__repr__()
+    for d in alls:
+        if d.name == title:
+            return d
+    return Variable(name=title, domain=p, codomain=one)
 
 def identity(p):
     if p.__class__.__name__ == 'ObjectType':

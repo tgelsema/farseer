@@ -14,10 +14,29 @@ from informationdialogue.compile.cmpl import cmpl
 # from exc import execute
 # from prsnt import present
 
-def ask(s):
+def readnask(filename):
+    (classmodel, classtokenizer, targetmodel, targettokenizer) = prepare()
+    if filename == "":
+        filename = "./testcases_class_5.txt"
+    fr = open(filename, 'r')
+    for line in fr:
+        report(line, classmodel, classtokenizer, targetmodel, targettokenizer)
+        print()
+        input("Press ENTER")
+        print()
+
+def prepare():
     (classmodel, classtokenizer) = getsavedmodelandtokenizer_classes()
     (targetmodel, targettokenizer) = getsavedmodelandtokenizer_targetindex()
+    return (classmodel, classtokenizer, targetmodel, targettokenizer)
+        
+def ask(s):
+    (classmodel, classtokenizer, targetmodel, targettokenizer) = prepare()
+    report(s, classmodel, classtokenizer, targetmodel, targettokenizer)
+
+def report(s, classmodel, classtokenizer, targetmodel, targettokenizer):
     (tokenlist, synonymlist, objectlist, keywordlist) = tokenize(s, lookup)
+    print('line:             %s' % s)
     print('tokens:           %s' % tokenlist)
     print('synonyms:         %s' % synonymlist)
     print('objects:          %s' % objectlist)
@@ -32,7 +51,7 @@ def ask(s):
     print('target:           %s' % target)
     term = interpret(tokenlist, objectlist, keywordlist, target, cls)
     if isinstance(term, list):
-        print('order variable:   %s' % term[1].more())
+        print('order variable:   %s %s' % (term[1].more(), id(term[1])))
         print('order:            %s' % term[2])
         var = term[1]
         order = term[2]
@@ -42,9 +61,9 @@ def ask(s):
         order = ""
     if term != None:
         print('term:             %s' % term.more())
-        c = cmpl(term, var, order)
-        print('sql query:        ')
-        print(c)
+        # c = cmpl(term, var, order)
+        # print('sql query:        ')
+        # print(c)
     else:
         print('term:             None')
     # print('\n')

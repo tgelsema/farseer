@@ -75,7 +75,9 @@ def getpivot(objectlist, keywordlist):
                         candidate = o[0].domain
             else:
                 candidate = None
-            pivot = getorigin(pivot, candidate)
+            possiblepivot = getorigin(pivot, candidate)
+            if possiblepivot != None:
+                pivot = possiblepivot
     orderedobjecttypelist = []
     orderedobjecttypelist.append(getindexfrompattern(['<greatest>', '<ot>'], 1, 0, keywordlist, True))
     orderedobjecttypelist.append(getindexfrompattern(['<smallest>', '<ot>'], 1, 0, keywordlist, True))

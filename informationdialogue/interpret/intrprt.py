@@ -8,9 +8,9 @@ Created on Mon Feb  4 10:40:17 2019
 # from intrprt_base import *
 from informationdialogue.interpret.intrprt_iota import getiota, getkappa, getiotapaths, makeiota
 from informationdialogue.interpret.intrprt_pivot import getpivot, gettarget, getpseudodimension, getnexttarget
-from informationdialogue.interpret.intrprt_dims import getdimensions, getdimensionpaths, appendvariablestopaths
-from informationdialogue.interpret.intrprt_base import een, alle, makecomposition, makeproduct, makealpha, makeprojectioneasy, getpaths, align
-from informationdialogue.interpret.intrprt_split import splitpaths, getfinals, getsplit, connectdimensions, getsplitfromkappa, splitkappa, getsplitfromobjectlist
+from informationdialogue.interpret.intrprt_dims import getdimensionpaths, appendvariablestopaths
+from informationdialogue.interpret.intrprt_base import een, alle, makecomposition, makeproduct, makealpha, makeprojectioneasy, align
+from informationdialogue.interpret.intrprt_split import getsplit, getsplitfromkappa, getsplitfromobjectlist
 from informationdialogue.interpret.intrprt_vars import getpathstonumvars, getpathstocatvars, getpathstoobjecttypes, getpathfromvar
 from informationdialogue.interpret.intrprt_order import getorder
 from informationdialogue.learn.lrn import getsavedmodelandtokenizer_classes, getclassfrommodelandtokenizer, getsavedmodelandtokenizer_targetindex
@@ -55,13 +55,13 @@ def interpret(tokenlist, objectlist, keywordlist, target, cls):
         otypes.append(makecomposition(path))
     iota = getiota(objectlist, keywordlist, pivot, target)
     (paths, pathsfrompivot, ignore) = getdimensionpaths(objectlist, keywordlist, pivot, target, None, {})
-    kappa = getkappa(objectlist, keywordlist, pivot, target, iota, pathsfrompivot)
+    kappa = getkappa(objectlist, keywordlist, pivot, target, iota, pathsfrompivot, None)
     if cls == 1:
         return assembletermforclass1(target, numvars, classvars, otypes, kappa, True)
     elif cls == 2:
-        return assembletermforclass2and3(objectlist, keywordlist, pivot, target, pathsfrompivot, [], iota)
+        return assembletermforclass2and3(objectlist, keywordlist, pivot, target, pathsfrompivot, [], iota, None)
     elif cls == 3:
-        return assembletermforclass2and3(objectlist, keywordlist, pivot, target, pathsfrompivot, numvars, iota)
+        return assembletermforclass2and3(objectlist, keywordlist, pivot, target, pathsfrompivot, numvars, iota, None)
     elif cls == 4:
         return assembletermforclass4(objectlist, keywordlist, pivot, target, pathsfrompivot, numvars, kappa, iota)
     elif cls == 5:
@@ -179,7 +179,7 @@ def assembletermforclass8(objectlist, keywordlist, tokenlist, target, pivot, num
         return None
     (objectlist, keywordlist, tokenlist) = insertpseudodimension(objectlist, keywordlist, tokenlist, pseudodimension)
     (ignorepaths, paths, ignoredict) = getdimensionpaths(objectlist, keywordlist, pivot, target, None, {})
-    return [assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, numvars, iota), numvars[0], order]
+    return [assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, numvars, iota, None), numvars[0], order]
 
 def assembletermforclass7(objectlist, keywordlist, tokenlist, target, pivot, kappa, iota, order):
     """Build a term for class 7 queries, which are of the form
@@ -195,7 +195,7 @@ def assembletermforclass7(objectlist, keywordlist, tokenlist, target, pivot, kap
         return None
     (objectlist, keywordlist, tokenlist) = insertpseudodimension(objectlist, keywordlist, tokenlist, pseudodimension)
     (ignorepaths, paths, ignoredict) = getdimensionpaths(objectlist, keywordlist, pivot, target, None, {})
-    return [assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, [een(target)], iota), een(target), order]
+    return [assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, [een(target)], iota, None), een(target), order]
 
 def assembletermforclass6(objectlist, keywordlist, target, iota, order):
     """Build a term for class 6, which expresses a query of the form
@@ -223,7 +223,7 @@ def assembletermforclass6(objectlist, keywordlist, target, iota, order):
         return [assembletermforclass1(target, [var], [], [], iota, True), var, order]
     else:
         path = getpathfromvar(objectlist, keywordlist, var, pseudodimension)
-        return [assembletermforclass2and3(objectlist, keywordlist, var.domain, target, [path], [var], iota), var, order]   
+        return [assembletermforclass2and3(objectlist, keywordlist, var.domain, target, [path], [var], iota, None), var, order]   
 
 def assembletermforclass1(target, numvars, classvars, otypes, kappa, includetargetdefaults):
     """Build a term for class 1, which expresses a number of variables for
@@ -257,7 +257,7 @@ def assembletermforclass1(target, numvars, classvars, otypes, kappa, includetarg
         v = makecomposition([v, kappa])
     return v
 
-def assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, numvars, iota):
+def assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, numvars, iota, split):
     """Build a class 2 term, which is of the form
             a(v, w).
     In the simplest case, v = een(target) and w = alle(target), when no
@@ -302,7 +302,7 @@ def assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, num
     Only in the last example the general case applies.
     """
     # default case: assume pivot equals target and no selections or dimensions apply
-    kappa = getkappa(objectlist, keywordlist, pivot, target, iota, paths)
+    kappa = getkappa(objectlist, keywordlist, pivot, target, iota, paths, split)
     if numvars != []:
         v = makeproduct(numvars)
     else:
@@ -318,6 +318,8 @@ def assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, num
         z = makeprojectioneasy(kappa, 1)
         w = makecomposition([w, z])
         i = 1
+        if split != None:
+            i += 1
     if paths != [] and paths != [[]]:
         if i == 0 and len(paths) == 1:
             w = kappa
@@ -355,8 +357,8 @@ def assembletermforclass4(objectlist, keywordlist, pivot, target, paths, numvars
         return None
     x = numvars[0]
     
-    z1 = assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, [x], iota)
-    z2 = assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, [], iota)
+    z1 = assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, [x], iota, None)
+    z2 = assembletermforclass2and3(objectlist, keywordlist, pivot, target, paths, [], iota, None)
      
     return makecomposition([gedeelddoor, makeproduct([z1, z2])])
 
@@ -402,8 +404,8 @@ def assembletermforclass5(objectlist, keywordlist, pivot, target, paths, kappa, 
     iotadenompaths = getiotapaths(objectlist, keywordlist, pivot, target, iotanumpaths)
     iotadenom = makeiota(iotadenompaths, objectlist, pivot)
     iotanum = makeiota(iotanumpaths, objectlist, split)
-    z1 = assembletermforclass2and3(objectlist, keywordlist, pivot, target, denomdimpaths, [], iotadenom)
-    z2 = assembletermforclass2and3(objectlist, keywordlist, split, split, numdimpaths, [], iotanum)
+    z1 = assembletermforclass2and3(objectlist, keywordlist, pivot, target, denomdimpaths, [], iotadenom, split)
+    z2 = assembletermforclass2and3(objectlist, keywordlist, split, split, numdimpaths, [], iotanum, None)
     z2 = align(z2, z1)
     if z2 != None:
         return makecomposition([gedeelddoor, makeproduct([z1, z2])])

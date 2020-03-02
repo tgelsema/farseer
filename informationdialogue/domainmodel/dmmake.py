@@ -2,7 +2,7 @@ from ..term.trm import Application, product, composition, cartesian_product
 from informationdialogue.kind.knd import Phenomenon, ObjectType, Variable, ObjectTypeRelation, DatasetDesign, Quantity, Constant, Operator, Level, one
 from informationdialogue.domainmodel.scmcodelookup import lookupscmcode
 from informationdialogue.domainmodel.maandlookup import lookupmaand
-from informationdialogue.domainmodel.interpretcodelists import addconsts, makescmcodedata
+from informationdialogue.domainmodel.interpretcodelists import addconsts, makescmcodedata, gemeenteconsts
 import pickle
 
 lookup = {}
@@ -64,19 +64,25 @@ baanbedrijfid = Variable(name='werkgever', domain=baan, codomain=persoon)
 bedrijfadresid = Variable(name='gevestigd_op', domain=bedrijf, codomain=adres)
 
 # nice to haves
-eenpersoon = Variable(name='een', domain=persoon, codomain=getal)
-eenadres = Variable(name='een', domain=adres, codomain=getal)
-eengemeente = Variable(name='een', domain=gemeente, codomain=getal)
-eenbaan = Variable(name='een', domain=baan, codomain=getal)
-eenbedrijf = Variable(name='een', domain=bedrijf, codomain=getal)
+eenpersoon = Variable(name='een(persoon)', domain=persoon, codomain=getal)
+eenadres = Variable(name='een(adres)', domain=adres, codomain=getal)
+eengemeente = Variable(name='een(gemeente)', domain=gemeente, codomain=getal)
+eenbaan = Variable(name='een(baan)', domain=baan, codomain=getal)
+eenbedrijf = Variable(name='een(bedrijf)', domain=bedrijf, codomain=getal)
+
+allepersoon = Variable(name='alle(persoon)', domain=persoon, codomain=one)
+alleadres = Variable(name='alle(adres)', domain=adres, codomain=one)
+allegemeente = Variable(name='alle(gemeente)', domain=gemeente, codomain=one)
+allebaan = Variable(name='alle(baan)', domain=baan, codomain=one)
+allebedrijf = Variable(name='alle(bedrijf)', domain=bedrijf, codomain=one)
 
 # constants
 # cities
-denhaag = Constant(name='Den Haag', codomain=gemeentenamen)
-delft = Constant(name='Delft', codomain=gemeentenamen)
-rotterdam = Constant(name='Rotterdam', codomain=gemeentenamen)
-utrecht = Constant(name='Utrecht', codomain=gemeentenamen)
-leiden = Constant(name='Leiden', codomain=gemeentenamen)
+# denhaag = Constant(name='Den Haag', codomain=gemeentenamen)
+# delft = Constant(name='Delft', codomain=gemeentenamen)
+# rotterdam = Constant(name='Rotterdam', codomain=gemeentenamen)
+# utrecht = Constant(name='Utrecht', codomain=gemeentenamen)
+# leiden = Constant(name='Leiden', codomain=gemeentenamen)
 
 # streets
 aartvanderleeuwlaan = Constant(name='Aart van der Leeuwlaan', codomain=straatnamen)
@@ -177,8 +183,8 @@ domainmodel = [persoon, adres, gemeente, baan, bedrijf, getal, datum, tekst, gem
 
 #### persoonadresid, adresgemeenteid, bedrijfid, baanpersoonid, baanbedrijfid, bedrijfadresid
 
-domainmodel.extend([denhaag, delft, rotterdam, utrecht,
-      leiden, kolonel, wethouder, griffier, seismoloog, watermanager, oogarts, industrie, onderwijs, bouwnijverheid, openbaarbestuur,
+domainmodel.extend([
+      kolonel, wethouder, griffier, seismoloog, watermanager, oogarts, industrie, onderwijs, bouwnijverheid, openbaarbestuur,
       zakelijkedienstverlening, gezondheidszorg, tjalling, maartje, emma, john, hans, mirjam, petra, karsten, thor, kirsten,
       marcel, irene, robert, ellen, chris, rachel, jacob, johanna, david, esther, diana, mathilde, jeroen, henriette, sander,
       harry, barry, alex, samantha, bob, richard, jack, jill, sandra, peter, sabine, ronald, linda, tim, tom, selena, gerard,
@@ -186,6 +192,8 @@ domainmodel.extend([denhaag, delft, rotterdam, utrecht,
       meppelerweg, lutherseburgwal, coolsingel, blaak, amsterdamsestraatweg, europalaan, josephhaydnlaan, rapenburg, wittesingel,
       haagweg, klikspaanweg])
 
+ones = [eenpersoon, eenadres, eengemeente, eenbaan, eenbedrijf]
+alls = [allepersoon, alleadres, allegemeente, allebaan, allebedrijf]
 
 # datasets
 persoondata = DatasetDesign(name='persoon', constr=Application(product, [persoonid, naam, leeftijd, geslacht, inkomen, persoonadresid]))
@@ -278,12 +286,6 @@ lookup = {
     'verdient' : inkomen,
     'verdienen' : inkomen,
     'verdiend' : inkomen,
-    'den haag' : denhaag,
-    "'s-Gravenhage" : denhaag,
-    'delft' : delft,
-    'rotterdam' : rotterdam,
-    'utrecht' : utrecht,
-    'leiden' : leiden,
     'kolonel' : kolonel,
     'kolonels' : kolonel,
     'kolonellen' : kolonel,
@@ -437,7 +439,7 @@ vocab = []
 
 # object types
 delict = ObjectType(name='delict')
-buurt = ObjectType(name='buurt')
+# buurt = ObjectType(name='buurt')
 # gemeente = ObjectType(name='gemeente')
 datum = ObjectType(name='datum')
 
@@ -446,7 +448,7 @@ datum = ObjectType(name='datum')
 # gemeentenamen = Phenomenon(name='gemeentenaam')
 dagen = Phenomenon(name='dag')
 maanden = Phenomenon(name='maand')
-buurtnamen = Phenomenon(name='buurtnaam')
+# buurtnamen = Phenomenon(name='buurtnaam')
 # delictsoorten = Phenomenon(name='delictsoort')
 
 # locatiesoorten = Phenomenon(name='locatiesoort')
@@ -459,13 +461,13 @@ soortdelictlevel2 = Level("SCM code - level 2")
 soortdelictlevel3 = Level("SCM code - level 3")
 
 # object type relations
-gepleegdin = ObjectTypeRelation(name='gepleegd in', domain=delict, codomain=buurt)
-onderdeelvan = ObjectTypeRelation(name='onderdeel van', domain=buurt, codomain=gemeente)
+gepleegdin = ObjectTypeRelation(name='gepleegd in', domain=delict, codomain=gemeente)
+# onderdeelvan = ObjectTypeRelation(name='onderdeel van', domain=buurt, codomain=gemeente)
 gepleegdop = ObjectTypeRelation(name='gepleegd op', domain=delict, codomain=datum)
 
 # variables
 # gemeentenaam = Variable(name='gemeentenaam', domain=gemeente, codomain=gemeentenamen)
-buurtnaam = Variable(name='buurtnaam', domain=buurt, codomain=buurtnamen)
+# buurtnaam = Variable(name='buurtnaam', domain=buurt, codomain=buurtnamen)
 soortlevel0 = Variable(name='soort - level 0', domain=delict, codomain=soortdelictlevel0)
 soortlevel1 = Variable(name='soort - level 1', domain=delict, codomain=soortdelictlevel1)
 soortlevel2 = Variable(name='soort - level 2', domain=delict, codomain=soortdelictlevel2)
@@ -478,17 +480,24 @@ maand = Variable(name='maand', domain=datum, codomain=maanden)
 # keys and foreign keys
 delictid = Variable(name='delict_id', domain=delict, codomain=identificaties)
 # gemeenteid = Variable(name='gemeente_id', domain=gemeente, codomain=identificaties)
-buurtid = Variable(name='buurt_id', domain=buurt, codomain=identificaties)
+# buurtid = Variable(name='buurt_id', domain=buurt, codomain=identificaties)
 datumid = Variable(name='datum_id', domain=datum, codomain=identificaties)
-delictbuurtid = Variable(name='gepleegd_in', domain=delict, codomain=buurt)
+# delictbuurtid = Variable(name='gepleegd_in', domain=delict, codomain=buurt)
 delictdatumid = Variable(name='gepleegd_op', domain=delict, codomain=datum)
-buurtgemeenteid = Variable(name='onderdeel_van', domain=buurt, codomain=gemeente)
+# buurtgemeenteid = Variable(name='onderdeel_van', domain=buurt, codomain=gemeente)
+delictgemeenteid = Variable(name='gepleegd_in', domain=delict, codomain=gemeente)
 
 # nice to haves
-eendelict = Variable(name='een', domain=delict, codomain=getal)
-eenbuurt = Variable(name='een', domain=buurt, codomain=getal)
+eendelict = Variable(name='een(delict)', domain=delict, codomain=getal)
+# eenbuurt = Variable(name='een', domain=buurt, codomain=getal)
 # eengemeente = Variable(name='een', domain=gemeente, codomain=getal)
-eendatum = Variable(name='een', domain=datum, codomain=getal)
+eendatum = Variable(name='een(datum)', domain=datum, codomain=getal)
+
+alledelict = Variable(name='alle(delict)', domain=delict, codomain=one)
+alledatum = Variable(name='alle(datum)', domain=datum, codomain=one)
+
+ones += [eendelict, eendatum]
+alls += [alledelict, alledatum]
 
 
 # operators
@@ -496,23 +505,25 @@ eendatum = Variable(name='een', domain=datum, codomain=getal)
 
 
 # domain model
-domainmodel += [delict, buurt, datum, dagen, maanden, buurtnamen,
-               identificaties, gepleegdin, onderdeelvan, gepleegdop, buurtnaam,
+domainmodel += [delict, datum, dagen, maanden,
+               identificaties, gepleegdin, gepleegdop,
                soortdelictlevel0, soortdelictlevel1, soortdelictlevel2, soortdelictlevel3,
                soortlevel0, soortlevel1, soortlevel2, soortlevel3,
-               aantalverdachten, dag, maand, delictid, buurtid, datumid,
-               delictbuurtid, delictdatumid, buurtgemeenteid, eendelict, eenbuurt, eendatum]
+               aantalverdachten, dag, maand, delictid, datumid,
+               eendelict, eendatum, alledelict, alledatum]
 
 lookupdm = {
         'delict' : delict,
         'misdrijf' : delict,
         'vergrijp' : delict,
         'overtreding': delict,
-        'buurt' : buurt,
         'datum' : datum,
         'data' : datum,
         'dag': datum,
-        'dagen' : datum
+        'dagen' : datum,
+        'verdachten' : aantalverdachten,
+        'hoeveel verdachten' : aantalverdachten,
+        'aantal verdachten' : aantalverdachten
 }
 
 # constants
@@ -532,25 +543,29 @@ addconsts('./informationdialogue/domainmodel/dag.xml', dagen, domainmodel)
 # months
 addconsts('./informationdialogue/domainmodel/maand.xml', maanden, domainmodel)
 
-
 # datasets
 delictdata = DatasetDesign(name='delict', constr=Application(product, [delictid, soortlevel0, soortlevel1,
                                                                        soortlevel2, soortlevel3, aantalverdachten,
-                                                                       delictdatumid, delictbuurtid]))
-buurtdata = DatasetDesign(name='buurt', constr=Application(product, [buurtid, buurtnaam, buurtgemeenteid]))
+                                                                       delictdatumid, delictgemeenteid]))
+# buurtdata = DatasetDesign(name='buurt', constr=Application(product, [buurtid, buurtnaam, buurtgemeenteid]))
 # gemeentedata = DatasetDesign(name='gemeente', constr=Application(product, [gemeenteid, gemeentenaam]))
 datumdata = DatasetDesign(name='datum', constr=Application(product, [datumid, dag, maand]))
 
-data += [delictdata, buurtdata, datumdata]
+data += [delictdata, datumdata]
 
 # default variables
 defaults[delict] = [delictid]
-defaults[buurt] = [buurtnaam]
-defaults[datum] = [dag,maand]
+# defaults[buurt] = [buurtnaam]
+defaults[datum] = [dag, maand]
 
 prefaggrmode[aantalverdachten] = 'avg'
 
-prefvar[buurtnamen] = buurtnaam
+prefvar[maanden] = maand
+# prefvar[buurtnamen] = buurtnaam
+
+orderedobjecttype[delict] = eendelict
+orderedobjecttype[datum] = eendatum
+
 # below is probably wrong
 # prefvar[soortlevel0] = soortdelictlevel0
 # prefvar[soortlevel1] = soortdelictlevel1
@@ -588,6 +603,17 @@ overridetarget[soortdelictlevel3] = delict
         
 
 # if __name__ == '__main__':
+
+gemconsts = gemeenteconsts(gemeentenamen)
+
+for c in gemconsts:
+    if not c.name.lower() in lookup.keys():
+        lookup[c.name.lower()] = c
+        if c.name.lower() == "'s-gravenhage":
+            lookup['den haag'] = c
+
+domainmodel += gemconsts
+
 for k in lookupmaand.keys():
     for d in domainmodel:
         if lookupmaand[k] == d.name:
@@ -619,7 +645,7 @@ for d in domainmodel:
 def savedomainmodel():
     dm = [lookup, domainmodel, prefvar, defaults, overridetarget, prefaggrmode,
           vocab, interrogativepronouns, whichway, optimalpathhelper, orientation,
-          orderedobjecttype, data, getal, gedeelddoor, one]
+          orderedobjecttype, data, getal, gedeelddoor, one, ones, alls]
     with open('./informationdialogue/domainmodel/dm.pickle', mode='wb') as fw:
         pickle.dump(dm, fw, protocol=pickle.HIGHEST_PROTOCOL)
         

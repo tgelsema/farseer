@@ -205,7 +205,7 @@ def getclues(k, keywordlist):
     clues.append(getclueindexfrompattern(['*', '<whowhat>', '<otr>'], 2, context, keywordlist)) # dubious
     return clues
 
-def getkappa(objectlist, keywordlist, pivot, target, iota, paths):
+def getkappa(objectlist, keywordlist, pivot, target, iota, paths, split):
     """If pivot does not equal target, a kappa term must be constructed out of
     a path connecting the two. A kappa term associated with, e.g., the pivot
     'baan' and the target 'persoon' (through the 'werknemer' object type
@@ -230,6 +230,9 @@ def getkappa(objectlist, keywordlist, pivot, target, iota, paths):
             # if keywordlist[i] == '<const>' and objectlist[i].codomain in overridetarget.keys():
             #     clues.append(overridetarget[objectlist[i].codomain])
             i += 1
+        if split != None:
+            path = getoptimalpath(getpaths(pivot, split), clues, [])
+            paths.insert(0, path)
         path = getoptimalpath(getpaths(pivot, target), clues, [])
         paths.insert(0, path)
     selcsterm = makeselections(paths)
