@@ -402,10 +402,10 @@ def do_composition(qsts, var, order):
         alias = ""
         args = deepcopy(rhs.selectscod) # We can assume args is a two-item list
         if orderby is not None:
-            if args[0].alias == Name("key"):
+            if args[0].column == Name("key") or args[0].alias == Name("key"):
                 alias = Name("key")
                 args[0].alias = ""
-            elif args[1].alias == Name("key"):
+            elif args[1].column == Name("key") or args[1].alias == Name("key"):
                 alias = Name("key")
                 args[1].alias = ""
                 orderdir = "desc" if orderdir == "asc" else "desc"
