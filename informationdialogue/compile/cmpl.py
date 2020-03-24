@@ -10,8 +10,8 @@ import re
 from copy import copy, deepcopy
 
 from informationdialogue.term.trm import Application, composition, product, inclusion, inverse, alpha, projection
-from informationdialogue.kind.knd import Variable, ObjectTypeRelation, Constant, Operator
-from informationdialogue.domainmodel.dm import data, one
+from informationdialogue.kind.knd import Variable, ObjectTypeRelation, Constant, Operator, one
+from informationdialogue.domainmodel.testdm import data
 
 # global variable
 table_num = 0
