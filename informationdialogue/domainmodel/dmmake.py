@@ -46,6 +46,7 @@ naam = Variable(name='naam', domain=persoon, codomain=namen)
 huisnummer = Variable(name='huisnummer', domain=adres, codomain=huisnummers)
 straatnaam = Variable(name='straatnaam', domain=adres, codomain=straatnamen)
 gemeentenaam = Variable(name='gemeentenaam', domain=gemeente, codomain=gemeentenamen)
+gemeentecode = Variable(name='gemeentecode', domain=gemeente, codomain=gemeentenamen)
 functie = Variable(name='functie', domain=baan, codomain=beroepen)
 salaris = Variable(name='salaris', domain=baan, codomain=getal)
 omzet = Variable(name='omzet', domain=bedrijf, codomain=getal)
@@ -455,10 +456,10 @@ maanden = Phenomenon(name='maand')
 identificaties = Phenomenon(name='identificatie')
 
 # soorten delict
-soortdelictlevel0 = Level("SCM code - level 0")
-soortdelictlevel1 = Level("SCM code - level 1")
-soortdelictlevel2 = Level("SCM code - level 2")
-soortdelictlevel3 = Level("SCM code - level 3")
+soortdelictlevel0 = Level("SCM code level 0")
+soortdelictlevel1 = Level("SCM code level 1")
+soortdelictlevel2 = Level("SCM code level 2")
+soortdelictlevel3 = Level("SCM code level 3")
 
 # object type relations
 gepleegdin = ObjectTypeRelation(name='gepleegd in', domain=delict, codomain=gemeente)
@@ -468,10 +469,10 @@ gepleegdop = ObjectTypeRelation(name='gepleegd op', domain=delict, codomain=datu
 # variables
 # gemeentenaam = Variable(name='gemeentenaam', domain=gemeente, codomain=gemeentenamen)
 # buurtnaam = Variable(name='buurtnaam', domain=buurt, codomain=buurtnamen)
-soortlevel0 = Variable(name='soort - level 0', domain=delict, codomain=soortdelictlevel0)
-soortlevel1 = Variable(name='soort - level 1', domain=delict, codomain=soortdelictlevel1)
-soortlevel2 = Variable(name='soort - level 2', domain=delict, codomain=soortdelictlevel2)
-soortlevel3 = Variable(name='soort - level 3', domain=delict, codomain=soortdelictlevel3)
+soortlevel0 = Variable(name='soort level 0', domain=delict, codomain=soortdelictlevel0)
+soortlevel1 = Variable(name='soort level 1', domain=delict, codomain=soortdelictlevel1)
+soortlevel2 = Variable(name='soort level 2', domain=delict, codomain=soortdelictlevel2)
+soortlevel3 = Variable(name='soort level 3', domain=delict, codomain=soortdelictlevel3)
 aantalverdachten = Variable(name='aantal verdachten', domain=delict, codomain=getal)
 # soortlocatie = Variable(name='soort locatie', domain=delict, codomain=locatiesoorten)
 dag = Variable(name='dag', domain=datum, codomain=dagen)
@@ -483,9 +484,9 @@ delictid = Variable(name='delict_id', domain=delict, codomain=identificaties)
 # buurtid = Variable(name='buurt_id', domain=buurt, codomain=identificaties)
 datumid = Variable(name='datum_id', domain=datum, codomain=identificaties)
 # delictbuurtid = Variable(name='gepleegd_in', domain=delict, codomain=buurt)
-delictdatumid = Variable(name='gepleegd_op', domain=delict, codomain=datum)
+delictdatumid = Variable(name='gepleegd_op', domain=delict, codomain=identificaties)
 # buurtgemeenteid = Variable(name='onderdeel_van', domain=buurt, codomain=gemeente)
-delictgemeenteid = Variable(name='gepleegd_in', domain=delict, codomain=gemeente)
+delictgemeenteid = Variable(name='gepleegd_in', domain=delict, codomain=identificaties)
 
 # nice to haves
 eendelict = Variable(name='een(delict)', domain=delict, codomain=getal)
@@ -521,6 +522,8 @@ lookupdm = {
         'data' : datum,
         'dag': datum,
         'dagen' : datum,
+        'maand' : maand,
+        'maanden' : maand,
         'verdachten' : aantalverdachten,
         'hoeveel verdachten' : aantalverdachten,
         'aantal verdachten' : aantalverdachten
@@ -538,10 +541,10 @@ lookupdm = {
 domainmodel += makescmcodedata([soortdelictlevel0, soortdelictlevel1, soortdelictlevel2, soortdelictlevel3])
 
 # days
-addconsts('./informationdialogue/domainmodel/dag.xml', dagen, domainmodel)
+addconsts('./informationdialogue/domainmodel/dag.xml', dagen, domainmodel, False)
 
 # months
-addconsts('./informationdialogue/domainmodel/maand.xml', maanden, domainmodel)
+addconsts('./informationdialogue/domainmodel/maand.xml', maanden, domainmodel, True)
 
 # datasets
 delictdata = DatasetDesign(name='delict', constr=Application(product, [delictid, soortlevel0, soortlevel1,
@@ -561,6 +564,11 @@ defaults[datum] = [dag, maand]
 prefaggrmode[aantalverdachten] = 'avg'
 
 prefvar[maanden] = maand
+prefvar[dagen] = dag
+prefvar[soortdelictlevel0] = soortlevel0
+prefvar[soortdelictlevel1] = soortlevel1
+prefvar[soortdelictlevel2] = soortlevel2
+prefvar[soortdelictlevel3] = soortlevel3
 # prefvar[buurtnamen] = buurtnaam
 
 orderedobjecttype[delict] = eendelict

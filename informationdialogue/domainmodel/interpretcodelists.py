@@ -22,10 +22,13 @@ def writelabels(xmlfile, outfile):
         fw.write("',")
         fw.write('\n')
 
-def addconsts(xmlfile, cod, lst):
+def addconsts(xmlfile, cod, lst, labeleqcode):
     e = et.parse(xmlfile).getroot()
     for elt in e.findall('Code'):
-        c = Constant(name=elt.find('Label').text, codomain=cod, code=elt.find('Waarde').text)
+        if labeleqcode:
+            c = Constant(name=elt.find('Label').text, codomain=cod, code=elt.find('Label').text)
+        else:
+            c = Constant(name=elt.find('Label').text, codomain=cod, code=elt.find('Waarde').text)
         lst.append(c)
         
 def makescmcodedata(codlst):
@@ -84,12 +87,18 @@ def writelevel(lst, fw):
     
 def gemeenteconsts(cod):
     lst = []
-    with open('./informationdialogue/domainmodel/Gemeenten alfabetisch 2020.csv', 'r') as fr:
-        csvr = csv.reader(fr, delimiter='\t')
+    with open('./informationdialogue/domainmodel/gemeenten-alfabetisch-2016.csv', 'r') as fr: # , encoding='utf-8'
+        csvr = csv.reader(fr, delimiter=',')
+        i = 0
         for row in csvr:
-            const = Constant(name=row[2], codomain=cod, code=row[1])
-            if not const in lst:
-               lst.append(const)
+            if i != 0:
+                const = Constant(name=row[1], codomain=cod, code=row[1])
+                # const = Constant(name=row[1], codomain=cod, code='GM' + row[0])
+                if not const in lst:
+                   lst.append(const)
+            i += 1
+    const = Constant(name='Onbekend', codomain=cod, code='GM0999')
+    lst.append(const)
     return lst
 
 def test():

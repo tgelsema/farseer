@@ -17,7 +17,7 @@ from informationdialogue.compile.cmpl import cmpl
 def readnask(filename):
     (classmodel, classtokenizer, targetmodel, targettokenizer) = prepare()
     if filename == "":
-        filename = "./testcases_class_5.txt"
+        filename = "./testcases_delicten.txt"
     fr = open(filename, 'r')
     for line in fr:
         report(line, classmodel, classtokenizer, targetmodel, targettokenizer)
@@ -51,7 +51,7 @@ def report(s, classmodel, classtokenizer, targetmodel, targettokenizer):
     print('target:           %s' % target)
     term = interpret(tokenlist, objectlist, keywordlist, target, cls)
     if isinstance(term, list):
-        print('order variable:   %s %s' % (term[1].more(), id(term[1])))
+        print('order variable:   %s' % (term[1].more()))
         print('order:            %s' % term[2])
         var = term[1]
         order = term[2]

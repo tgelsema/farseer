@@ -65,7 +65,7 @@ def interpret(tokenlist, objectlist, keywordlist, target, cls):
     elif cls == 4:
         return assembletermforclass4(objectlist, keywordlist, pivot, target, pathsfrompivot, numvars, kappa, iota)
     elif cls == 5:
-        return assembletermforclass5(objectlist, keywordlist, pivot, target, pathsfrompivot, kappa, iota)
+        return assembletermforclass5(objectlist, keywordlist, pivot, target, pathsfrompivot, kappa, iota, [])
     elif cls == 6:
         return assembletermforclass6(objectlist, keywordlist, target, iota, order)
     elif cls == 7:
@@ -130,7 +130,7 @@ def assembletermforclass11(objectlist, keywordlist, tokenlist, target, pivot, ka
     #### print('nexttarget (pseudodimension): %s' % pseudodimension)
     (objectlist, keywordlist, tokenlist) = insertpseudodimension(objectlist, keywordlist, tokenlist, pseudodimension)
     (ignorepaths, paths, ignoredict) = getdimensionpaths(objectlist, keywordlist, pivot, target, None, {})
-    return [assembletermforclass5(objectlist, keywordlist, pivot, target, paths, kappa, iota), een(target), order]
+    return [assembletermforclass5(objectlist, keywordlist, pivot, target, paths, kappa, iota, [pseudodimension]), een(target), order]
 
 def assembletermforclass10(objectlist, keywordlist, tokenlist, target, numvars, otypes, kappa, order):
     """Build a term for class 10 queries, which are of the form
@@ -362,7 +362,7 @@ def assembletermforclass4(objectlist, keywordlist, pivot, target, paths, numvars
      
     return makecomposition([gedeelddoor, makeproduct([z1, z2])])
 
-def assembletermforclass5(objectlist, keywordlist, pivot, target, paths, kappa, iota):
+def assembletermforclass5(objectlist, keywordlist, pivot, target, paths, kappa, iota, nosplits):
     """Build a class 5 term, which expresses an average, i.e., a numerator and
     a denominator, which are both aggregate terms for counting objects. The
     numerator counts the objects associated with the target. The code below
@@ -391,11 +391,11 @@ def assembletermforclass5(objectlist, keywordlist, pivot, target, paths, kappa, 
     """
     split = None
     if paths != []:
-        split = getsplit(objectlist, keywordlist, target, paths)
+        split = getsplit(objectlist, keywordlist, target, paths, nosplits)
     if kappa != None and split == None:
-        split = getsplitfromkappa(objectlist, keywordlist, target, kappa)
+        split = getsplitfromkappa(objectlist, keywordlist, target, kappa, nosplits)
     if split == None:
-        split = getsplitfromobjectlist(objectlist, keywordlist, target)
+        split = getsplitfromobjectlist(objectlist, keywordlist, target, nosplits)
     if split == None:
         return None
     (pathsignore, numdimpaths, pathsdict) = getdimensionpaths(objectlist, keywordlist, split, split, split, {})
