@@ -61,6 +61,7 @@ def getpivot(objectlist, keywordlist):
     """
     pivot = None
     for o in objectlist:
+        candidate = None
         if o != None:
             if o.__class__.__name__ == 'ObjectType':
                 candidate = o

@@ -273,7 +273,7 @@ def named_entity_recognition(tokenlist, objectlist):
     synonymlist = [None] * len(tokenlist)
     i = 0
     while i < len(tokenlist):
-        if objectlist[i] == None and not tokenlist[i] in stopwords:
+        if objectlist[i] == None and not tokenlist[i] in stopwords and not tokenlist[i] in vocab:
             synonym = maximum_similarity(tokenlist[i])
             if synonym in lookup.keys():
                 objectlist[i] = lookup[synonym]

@@ -10,12 +10,12 @@ from informationdialogue.interpret.intrprt_base import getpaths, alle, makecarte
 from informationdialogue.interpret.intrprt_iota import getiota
 from informationdialogue.term.trm import Application
 
-def getsplitfromkappa(objectlist, keywordlist, target, kappa):
+def getsplitfromkappa(objectlist, keywordlist, target, kappa, nosplits):
     paths = getpathsfromkappa(kappa)
-    return getsplit(objectlist, keywordlist, target, paths)
+    return getsplit(objectlist, keywordlist, target, paths, nosplits)
 
-def getsplitfromobjectlist(objectlist, keywordlist, target):
-    potentialsplits = getpotentialsplits(objectlist, keywordlist, target)
+def getsplitfromobjectlist(objectlist, keywordlist, target, nosplits):
+    potentialsplits = getpotentialsplits(objectlist, keywordlist, target, nosplits)
     if potentialsplits != []:
         return potentialsplits[0]
     else:
@@ -97,24 +97,24 @@ def splitpath(path, split, final):
             pathright = []
     return(pathleft, pathright)
 
-def getpotentialsplits(objectlist, keywordlist, target):
+def getpotentialsplits(objectlist, keywordlist, target, nosplits):
     potentialsplits = []
     i = 0
     while i < len(keywordlist):
         if keywordlist[i] == '<ot>':
-            if objectlist[i] != target:
+            if objectlist[i] != target and not objectlist[i] in nosplits:
                 potentialsplits.append(objectlist[i])
         i += 1
     return potentialsplits
 
-def getsplit(objectlist, keywordlist, target, paths):
+def getsplit(objectlist, keywordlist, target, paths, nosplits):
     """Return the 'split' of a query as represented by objectlist and
     keywordlist: an object type that occurs in objectlist and does not equal
     the target. Split must be an object type that occurs somewehere as a
     codomain in paths. As a heuristic, return the split 'closest' to
     target, if multiple splits are found.
     """
-    potentialsplits = getpotentialsplits(objectlist, keywordlist, target)
+    potentialsplits = getpotentialsplits(objectlist, keywordlist, target, nosplits)
     split = None
     for p in potentialsplits:
         for path in paths:
