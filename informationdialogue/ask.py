@@ -75,7 +75,7 @@ def report(s, classmodel, classtokenizer, targetmodel, targettokenizer):
     #     present(e)
         
 if __name__ == '__main__':
-    ask('hoeveel banen zijn er in Rotterdam?')
+    # ask('hoeveel banen zijn er in Rotterdam?')
     # ask('inkomen van griffiers')
     # ask('gemiddeld inkomen van oogartsen')
     # ask('hoeveel vrouwelijke oogartsen werken er in het openbaar bestuur?') # answer: 0
@@ -149,3 +149,4 @@ if __name__ == '__main__':
     # ask('mannen en hun adressen') # bit curiuous when compared to last query: fixed
     # ask('griffiers en hun adressen')
     # ask('welke vrouwen zijn griffier?')
+    readnask("testcase_brandstichting.txt")
