@@ -1,12 +1,7 @@
-import sys
-sys.path.append("../")
-
-from term.trm import *
-from kind.knd import Variable, ObjectTypeRelation, Constant, Operator
-from domainmodel.dm import *
-from cmpl import cmpl
-
-exit(0)
+from informationdialogue.term.trm import *
+from informationdialogue.kind.knd import Variable, ObjectTypeRelation, Constant, Operator
+from informationdialogue.domainmodel.testdm import *
+from informationdialogue.compile.cmpl import cmpl, DIALECT_MYSQL, DIALECT_SQLSERVER
 
 def show_tests(terms):
     for i, term in enumerate(terms):
@@ -17,9 +12,11 @@ def test_terms(terms, showall = False, ordered = False):
     error = False
     for i, term in enumerate(terms):
         if ordered:
-            output = repr(cmpl(term[0], leeftijd, "asc"))
+            #output = repr(cmpl(data, term[0], leeftijd, "asc"))
+            output = cmpl(data, term[0], leeftijd, "asc").gen_sql(DIALECT_MYSQL)
         else:
-            output = repr(cmpl(term[0]))
+            #output = repr(cmpl(data, term[0]))
+            output = cmpl(data, term[0]).gen_sql(DIALECT_MYSQL)
         expected = term[1]
         if showall or output != expected:
             failstr = " failed" if output != expected else "======="
@@ -1115,10 +1112,45 @@ FROM persoon
 ORDER BY key DESC LIMIT 5
 """]
 ]
-    #show_tests(terms)
+
+    ndim_cod = Application(product, [ leeftijd, geslacht, inkomen ])
+    ndim_dom = Application(alpha, [ eenpersoon, ndim_cod ])
+
+
+    ndim_terms = [
+    [
+    ndim_cod,
+    """\
+SELECT persoon.persoon_id, persoon.leeftijd, persoon.geslacht, persoon.inkomen
+FROM persoon
+""" ], [
+    ndim_dom,
+    """\
+SELECT persoon.leeftijd, persoon.geslacht, persoon.inkomen, SUM(1)
+FROM persoon
+GROUP BY persoon.leeftijd, persoon.geslacht, persoon.inkomen
+""" ], [
+    Application(composition, [ ndim_dom, ndim_cod ]),
+    """\
+CREATE TEMPORARY TABLE tmp2
+SELECT persoon.persoon_id AS col0, persoon.leeftijd AS col1, persoon.geslacht AS col2, persoon.inkomen AS col3
+FROM persoon
+CREATE TEMPORARY TABLE tmp0
+SELECT persoon.leeftijd AS col0, persoon.geslacht AS col1, persoon.inkomen AS col2, SUM(1) AS col3
+FROM persoon
+GROUP BY persoon.leeftijd, persoon.geslacht, persoon.inkomen
+CREATE TEMPORARY TABLE tmp1
+SELECT tmp0.col0 AS col0, tmp0.col1 AS col1, tmp0.col2 AS col2, tmp0.col3 AS col3
+FROM tmp0
+SELECT tmp2.col0, tmp1.col3
+FROM tmp2
+JOIN (tmp1) ON (tmp1.col0 = tmp2.col1) AND (tmp1.col1 = tmp2.col2) AND (tmp1.col2 = tmp2.col3)
+""" ]
+]
+    show_tests(terms)
     test_terms(terms)
     test_terms(oldterms)
     test_terms(terms_ordered, ordered = True)
-
+    test_terms(ndim_terms)
 
     
