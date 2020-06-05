@@ -92,8 +92,8 @@ def gemeenteconsts(cod):
         i = 0
         for row in csvr:
             if i != 0:
-                const = Constant(name=row[1], codomain=cod, code=row[1])
-                # const = Constant(name=row[1], codomain=cod, code='GM' + row[0])
+                # const = Constant(name=row[1], codomain=cod, code=row[1])
+                const = Constant(name=row[1], codomain=cod, code='GM' + row[0])
                 if not const in lst:
                    lst.append(const)
             i += 1

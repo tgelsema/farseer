@@ -882,7 +882,8 @@ def cmplobjecttyperelation(data, term, var, order):
     return qst
 
 def cmplvariable(data, term, var, order):
-    if term.codomain == one or term.name[:3] == "een":
+    # if term.codomain == one or term.name[:3] == "een": # tgelsema: more instances of 'one' cause confusion and errors - cheap fix
+    if term.codomain.name == "1" or term.name[:3] == "een":
         return cmplimmediate(data, term, var, order)
 
     # Code below copied from cmplobjecttyperelation() and adapted
@@ -899,7 +900,8 @@ def cmplvariable(data, term, var, order):
     return qst
 
 def cmplimmediate(data, term, var, order):
-    if term.codomain == one:
+    # if term.codomain == one: # tgelsema: more instances of 'one' cause confusion and errors - cheap fix
+    if term.codomain.name == "1":
         imm = "'*'"
     elif term.name[:3] == "een":
         imm = "1"
@@ -915,7 +917,8 @@ def cmplimmediate(data, term, var, order):
     return qst
 
 def cmplconstant(data, term, var, order):
-    name = re.sub(" ", "_", term.name)
+    # name = re.sub(" ", "_", term.name) # tgelsema: rather use 'code' with constants
+    name = re.sub(" ", "_", term.code)
     selectsdom = [ ColumnAlias("", f"'*'", "") ]
     selectscod = [ ColumnAlias("", f"'{name}'", "") ]
     qst = QStruct(selectsdom, selectscod, TableAlias(""), [], [])
