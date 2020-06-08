@@ -191,7 +191,8 @@ domainmodel.extend([
       harry, barry, alex, samantha, bob, richard, jack, jill, sandra, peter, sabine, ronald, linda, tim, tom, selena, gerard,
       aart, marjan, erik, arnout, thea, jacobiene, ronaldo, gaby, aartvanderleeuwlaan, prinsmauritsstraat, westlandseweg,
       meppelerweg, lutherseburgwal, coolsingel, blaak, amsterdamsestraatweg, europalaan, josephhaydnlaan, rapenburg, wittesingel,
-      haagweg, klikspaanweg])
+      haagweg, klikspaanweg, eenpersoon, eengemeente, eenadres, eenbaan, eenbedrijf, allepersoon, alleadres, allegemeente,
+      allebaan, allebedrijf])
 
 ones = [eenpersoon, eenadres, eengemeente, eenbaan, eenbedrijf]
 alls = [allepersoon, alleadres, allegemeente, allebaan, allebedrijf]

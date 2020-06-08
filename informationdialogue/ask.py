@@ -5,7 +5,7 @@ Created on Fri Jun 29 11:48:24 2018
 @author: tgelsema
 """
 
-from informationdialogue.domainmodel.dm import lookup
+from informationdialogue.domainmodel.dm import lookup, data
 from informationdialogue.nlp.tknz import tokenize
 from informationdialogue.interpret.intrprt import interpret
 from informationdialogue.learn.lrn import getsavedmodelandtokenizer_classes, getsavedmodelandtokenizer_targetindex, getclassfrommodelandtokenizer, gettargetindexfrommodelandtokenizer
@@ -61,10 +61,10 @@ def report(s, classmodel, classtokenizer, targetmodel, targettokenizer):
         order = ""
     if term != None:
         print('term:             %s' % term.more())
-        c = cmpl(term, var, order)
+        c = cmpl(data, term, var, order)
         print('sql query:        ')
         print()
-        print(c)
+        print(c.gen_sql(dialect="MySQL"))
     else:
         print('term:             None')
     # print('\n')
@@ -75,7 +75,7 @@ def report(s, classmodel, classtokenizer, targetmodel, targettokenizer):
     #     present(e)
         
 if __name__ == '__main__':
-    ask('hoeveel banen zijn er in Rotterdam?')
+    # ask('hoeveel banen zijn er in Rotterdam?')
     # ask('inkomen van griffiers')
     # ask('gemiddeld inkomen van oogartsen')
     # ask('hoeveel vrouwelijke oogartsen werken er in het openbaar bestuur?') # answer: 0
@@ -149,3 +149,4 @@ if __name__ == '__main__':
     # ask('mannen en hun adressen') # bit curiuous when compared to last query: fixed
     # ask('griffiers en hun adressen')
     # ask('welke vrouwen zijn griffier?')
+    readnask("testcase_brandstichting.txt")

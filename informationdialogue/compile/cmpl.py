@@ -844,12 +844,35 @@ def cmplaggregation(data, args, var, order):
     qst = QStruct(selectsdom, selectscod, frm, joins, wheres, groupbys, frozen_qsts, False, qsts[0].orderby, qsts[0].orderdir)
     return qst
 
+def count_args(arg):
+    if hasattr(arg, "args"):
+        n = 0
+        for arg in arg.args:
+            n += count_args(arg)
+        return n
+    else:
+        return 1
+
 def cmplprojection(data, args, var, order):
     """ The projection operator has as input n arguments. The last argument is a number n
         while the other arguments are terms. The projection operator selects the nth term
-        from the list of terms. The parameter n is between 1 and the number of terms, inclusive"""
-    
-    return QProjection([args[-1] - 1], list(range(len(args) - 1)))
+        from the list of terms. The parameter n is between 1 and the number of terms, inclusive
+        
+        Terms can be products of terms, and those have to be expanded first. The reason for this
+        is that in cases such as that the projection operator works on a product of products, and while
+        <<A, B>, C> is different from <A, B, C> in the intermediate language, both give the same
+        QStruct. Projecting <<A,B>,C> to its first dimension means that <A,B> is kept; hence
+        this leads to a QProjection that projects to the first two dimensions of <A,B,C>
+        """
+    cur_dim = 0
+    for i, arg in enumerate(args[:-1]):
+        argsize = count_args(arg)
+        next_dim = cur_dim + argsize
+        if i == args[-1] - 1:
+            proj_list = list(range(cur_dim, next_dim))
+        cur_dim = next_dim
+
+    return QProjection(proj_list, cur_dim)
 
 def cmploperator(data, term, var, order):
     if term.name == "(/)":
@@ -882,7 +905,8 @@ def cmplobjecttyperelation(data, term, var, order):
     return qst
 
 def cmplvariable(data, term, var, order):
-    if term.codomain == one or term.name[:3] == "een":
+    # if term.codomain == one or term.name[:3] == "een": # tgelsema: more instances of 'one' cause confusion and errors - cheap fix
+    if term.codomain.name == "1" or term.name[:3] == "een":
         return cmplimmediate(data, term, var, order)
 
     # Code below copied from cmplobjecttyperelation() and adapted
@@ -899,7 +923,8 @@ def cmplvariable(data, term, var, order):
     return qst
 
 def cmplimmediate(data, term, var, order):
-    if term.codomain == one:
+    # if term.codomain == one: # tgelsema: more instances of 'one' cause confusion and errors - cheap fix
+    if term.codomain.name == "1":
         imm = "'*'"
     elif term.name[:3] == "een":
         imm = "1"
@@ -915,7 +940,8 @@ def cmplimmediate(data, term, var, order):
     return qst
 
 def cmplconstant(data, term, var, order):
-    name = re.sub(" ", "_", term.name)
+    # name = re.sub(" ", "_", term.name) # tgelsema: rather use 'code' with constants
+    name = re.sub(" ", "_", term.code)
     selectsdom = [ ColumnAlias("", f"'*'", "") ]
     selectscod = [ ColumnAlias("", f"'{name}'", "") ]
     qst = QStruct(selectsdom, selectscod, TableAlias(""), [], [])
