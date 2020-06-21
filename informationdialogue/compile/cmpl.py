@@ -510,10 +510,10 @@ class QProjection:
 
 
 def freeze_qsts(qsts):
-
     for qst in qsts:
         if isinstance(qst, QStruct) and (FREEZE_ALL or qst.groupbys or qst.distinct):
             qst.freeze()
+
 
 def cmpl(data, term, var = None, order = ""):
     global table_num
@@ -521,66 +521,62 @@ def cmpl(data, term, var = None, order = ""):
     table_num = 0
     return do_cmpl(data, term, var, order).dedup_frozen()
 
+
 def do_cmpl(data, term, var, order):
     if isinstance(term, Application):
-        if term.op == composition:
-            return cmplcomposition(data, term.args, var, order)
-        elif term.op == product:
-            return cmplproduct(data, term.args, var, order)
-        elif term.op == inclusion:
-            return cmplinclusion(data, term.args, var, order)
-        elif term.op == inverse:
-            return cmplinverse(data, term.args, var, order)
-        elif term.op == alpha:
-            return cmplaggregation(data, term.args, var, order)
-        elif term.op == projection:
-            return cmplprojection(data, term.args, var, order)
+        if term.op == projection:
+            return cmplprojection(term)            
+        else:
+            return cmplapplication(data, term, var, order)
     elif isinstance(term, Variable):
         return cmplvariable(data, term, var, order)
     elif isinstance(term, ObjectTypeRelation):
-        return cmplobjecttyperelation(data, term, var, order)
+        return cmplobjecttyperelation(data, term)
     elif isinstance(term, Constant):
-        return cmplconstant(data, term, var, order)
+        return cmplconstant(term)
     elif isinstance(term, Operator):
-        return cmploperator(data, term, var, order)
+        return cmploperator(term)
 
 
-def cmplcomposition(data, args, var, order):
-    qsts = []
-    for arg in args:
-        qsts.append(do_cmpl(data, arg, var, order))
-
+def cmplapplication(data, term, var, order):
+    qsts = [ do_cmpl(data, arg, var, order) for arg in term.args ]
     freeze_qsts(qsts)
-    return do_composition(qsts)
+
+    if term.op == composition:
+        return cmplcomposition(qsts)
+    elif term.op == product:
+        return cmplproduct(qsts)
+    elif term.op == inclusion:
+        return cmplinclusion(qsts)
+    elif term.op == inverse:
+        return cmplinverse(qsts)
+    elif term.op == alpha:
+        return cmplaggregation(qsts)
 
 
-def do_composition(qsts):
+def cmplcomposition(qsts):
     """
-    do_composition() performs n-ary composition as a recursive series of binary compositions.
+    cmplcomposition() performs n-ary composition as a series of binary compositions.
     The n-ary composition A o B o C o D is evaluated as A o (B o (C o D)).
     """
-    if len(qsts) == 1:
-        return qsts[0]
-
-    rhs = qsts.pop()
-    lhs = qsts.pop()
-
-    if isinstance(rhs, QProjection):
-        new_qst = do_composition_rhs_projection(lhs, rhs)
-    elif isinstance(lhs, QProjection):
-        new_qst = do_composition_lhs_projection(lhs, rhs)
-    elif isinstance(lhs, QOperator):
-        new_qst = do_composition_operator(lhs, rhs)
-    elif len(lhs.selectsdom) == 1:
-        new_qst = do_composition_one_dim(lhs, rhs)
-    else:
-        new_qst = do_composition_multi_dim(lhs, rhs)
-
-    qsts.append(new_qst)
-    return do_composition(qsts)
+    rhs = qsts[-1]
+    for lhs in qsts[-2::-1]:
+    
+        if isinstance(rhs, QProjection):
+            rhs = cmplcomposition_rhs_projection(lhs, rhs)
+        elif isinstance(lhs, QProjection):
+            rhs = cmplcomposition_lhs_projection(lhs, rhs)
+        elif isinstance(lhs, QOperator):
+            rhs = cmplcomposition_operator(lhs, rhs)
+        elif len(lhs.selectsdom) == 1:
+            rhs = cmplcomposition_one_dim(lhs, rhs)
+        else:
+            rhs = cmplcomposition_multi_dim(lhs, rhs)
+        
+    return rhs
 
 
-def do_composition_lhs_projection(lhs, rhs):
+def cmplcomposition_lhs_projection(lhs, rhs):
     """
     This function handles composition of a projection operator with some expression.
     The effect of an lhs projection operator is to only keep those columns from the rhs codomain
@@ -596,7 +592,7 @@ def do_composition_lhs_projection(lhs, rhs):
     return rhs
 
 
-def do_composition_rhs_projection(lhs, rhs):
+def cmplcomposition_rhs_projection(lhs, rhs):
     """
     This function handles composition of some expression with a projection operator.
     The effect of an rhs projection operator is to add dummy columns to the lhs domain.
@@ -611,7 +607,7 @@ def do_composition_rhs_projection(lhs, rhs):
     return lhs
 
 
-def do_composition_operator(lhs, rhs):
+def cmplcomposition_operator(lhs, rhs):
     """
     This function handles composition between a binary operator and a list of its arguments
     
@@ -637,7 +633,7 @@ def do_composition_operator(lhs, rhs):
     return rhs
 
 
-def do_composition_one_dim(lhs, rhs):
+def cmplcomposition_one_dim(lhs, rhs):
     """
     Do composition of two ordinary (non-projection, non-operator) expressions where the domain of the lhs and the
     codomain of the rhs are both one dimensional.
@@ -685,7 +681,7 @@ def do_composition_one_dim(lhs, rhs):
     return QStruct(selectsdom, selectscod, frm, joins, wheres, [], frozen_qsts, None, orderby, orderdir)
 
 
-def do_composition_multi_dim(lhs, rhs):
+def cmplcomposition_multi_dim(lhs, rhs):
     """
     Perform composition of two expressions, where the codomain of the rhs and the domain of the lhs
     are multi-dimensional. Rather than doing a complicated join of joins (which would require in-depth
@@ -723,11 +719,7 @@ def do_composition_multi_dim(lhs, rhs):
     return QStruct(selectsdom, selectscod, frm, joins, wheres, [], frozen_qsts, None, orderby, orderdir)
 
 
-def cmplproduct(data, args, var, order):
-    qsts = []
-    for arg in args:
-        qsts.append(do_cmpl(data, arg, var, order))
-
+def cmplproduct(qsts):
     if isinstance(qsts[0], QProjection):
         dimensions = []
         all_dimensions = qsts[0].all_dimensions
@@ -738,7 +730,6 @@ def cmplproduct(data, args, var, order):
         
         return QProjection(dimensions, all_dimensions)
 
-    freeze_qsts(qsts)
 
     selectsdom = qsts[0].selectsdom
     joins = []
@@ -752,7 +743,6 @@ def cmplproduct(data, args, var, order):
         for qdim, dim in zip(qst.selectsdom, selectsdom):
             if qdim is not None and dim is not None and qdim.table != dim.table:
                 newjoins[qdim.table] = newjoins.get(qdim.table, JoinSpec(qdim.table, "")).add_cond(dim.get_column(), qdim.get_column())
-                #joins.append(JoinSpec(qdim.table, "", dim.get_column(), qdim.get_column()))
     joins = list(newjoins.values())
     selectscod = [s for q in qsts for s in q.selectscod ]
     frm = qsts[0].frm
@@ -770,13 +760,7 @@ def cmplproduct(data, args, var, order):
     qst = QStruct(selectsdom, selectscod, frm, joins, wheres, groupbys, frozen_qsts, None, orderby, orderdir)
     return qst
 
-def cmplinclusion(data, args, var, order):
-    qsts = []
-    for arg in args:
-        qsts.append(do_cmpl(data, arg, var, order))
-
-    freeze_qsts(qsts)
-
+def cmplinclusion(qsts):
     selectsdom = qsts[0].selectsdom
     joins = []
     for qst in qsts[1:]:
@@ -789,24 +773,18 @@ def cmplinclusion(data, args, var, order):
                                 # If arguments contain wheres, they should be the same for all arguments, 
                                 # since the domain of every argument must be the same. Hence it is sufficient
                                 # to only gather the wheres from the 1st argument.
-    for i, q in enumerate(qsts):
-        if i % 2 == 0: # LHS of comparison
-            lhs = q.selectscod
-        else:
-            rhs = q.selectscod
-            for l, r in zip(lhs, rhs):  # We can assume the input is well-formed, and hence lhs and rhs have the same length
-                wheres.append(Cond(l, r))
+    
+    # The arguments of inclusion alternate between left and right hand sides of comparison:
+    # arg[0] == arg[1] && arg[2] == arg[3] && ...
+    for qst_left, qst_right in zip(qsts[::2], qsts[1::2]):
+        for lhs, rhs in zip(qst_left.selectscod, qst_right.selectscod):  
+            wheres.append(Cond(lhs, rhs))
+
     frozen_qsts = [ f for q in qsts for f in q.frozen_qsts ]
     qst = QStruct(selectsdom, selectscod, frm, joins, wheres, [], frozen_qsts)
     return qst
 
-def cmplinverse(data, args, var, order):
-    qsts = []
-    for arg in args:
-        qsts.append(do_cmpl(data, arg, var, order))
-
-    freeze_qsts(qsts)
-
+def cmplinverse(qsts):
     selectsdom = deepcopy(qsts[0].selectscod)
     selectscod = deepcopy(qsts[0].selectscod)
     frm = qsts[0].frm
@@ -819,13 +797,7 @@ def cmplinverse(data, args, var, order):
     qst = QStruct(selectsdom, selectscod, frm, joins, wheres, [], frozen_qsts, True, orderby, orderdir)
     return qst
 
-def cmplaggregation(data, args, var, order):
-    qsts = []
-    for arg in args:
-        qsts.append(do_cmpl(data, arg, var, order))
-
-    freeze_qsts(qsts)
-
+def cmplaggregation(qsts):
     selectsdom = qsts[1].selectscod
     joins = []
 
@@ -846,17 +818,14 @@ def cmplaggregation(data, args, var, order):
 
 def count_args(arg):
     if hasattr(arg, "args"):
-        n = 0
-        for arg in arg.args:
-            n += count_args(arg)
-        return n
+        return sum(count_args(arg) for arg in arg.args)
     else:
         return 1
 
-def cmplprojection(data, args, var, order):
-    """ The projection operator has as input n arguments. The last argument is a number n
+def cmplprojection(term):
+    """ The projection operator has as input m arguments. The last argument is a number n
         while the other arguments are terms. The projection operator selects the nth term
-        from the list of terms. The parameter n is between 1 and the number of terms, inclusive
+        from the list of terms. The parameter n is between 1 and the number of terms, inclusive.
         
         Terms can be products of terms, and those have to be expanded first. The reason for this
         is that in cases such as that the projection operator works on a product of products, and while
@@ -865,16 +834,16 @@ def cmplprojection(data, args, var, order):
         this leads to a QProjection that projects to the first two dimensions of <A,B,C>
         """
     cur_dim = 0
-    for i, arg in enumerate(args[:-1]):
+    for i, arg in enumerate(term.args[:-1]):
         argsize = count_args(arg)
         next_dim = cur_dim + argsize
-        if i == args[-1] - 1:
+        if i == term.args[-1] - 1:
             proj_list = list(range(cur_dim, next_dim))
         cur_dim = next_dim
 
     return QProjection(proj_list, cur_dim)
 
-def cmploperator(data, term, var, order):
+def cmploperator(term):
     if term.name == "(/)":
         qop = QOperator(infix = " / ")
         return qop
@@ -895,7 +864,7 @@ def foundsome(subterm_name, term):
             return True
     return False
     
-def cmplobjecttyperelation(data, term, var, order):
+def cmplobjecttyperelation(data, term):
     name = re.sub(' ', '_', term.name)
     table = findtable(data, name)
     frm = TableAlias(table)
@@ -939,7 +908,7 @@ def cmplimmediate(data, term, var, order):
     qst = QStruct(selectsdom, selectscod, frm, None, None, None, None, None, orderby, order)
     return qst
 
-def cmplconstant(data, term, var, order):
+def cmplconstant(term):
     # name = re.sub(" ", "_", term.name) # tgelsema: rather use 'code' with constants
     name = re.sub(" ", "_", term.code)
     selectsdom = [ ColumnAlias("", f"'*'", "") ]
